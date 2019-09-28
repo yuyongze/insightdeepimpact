@@ -4,7 +4,7 @@ Improve Movie Discourse, Better!
 
  A web application to help you evaluate and improve the impact of movie reviews. 
 
-Links: [](https://insightdeepimpact.com)
+Links: [https://insightdeepimpact.com](https://insightdeepimpact.com)
 
 ## Project Description
 
@@ -20,5 +20,5 @@ The data is collected and scraped from  [IMDB](https://www.imdb.com/) using [Sel
 
 ### Data Preprocessing
 
-The review text 
+The review text is preprocessed to general structural, syntax, topic, lexical, and content information using [Scikit-Learn Text Preprocessing](https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html), [Natural Language Toolkit](https://www.nltk.org/), and [Gensim](https://radimrehurek.com/gensim/index.html).
 
