@@ -68,10 +68,10 @@ def get_top_n_table(scaled_feature_df,scaled_test,review_df,movie_info,order_by 
         Call this function to get similarity table by passing order_by different content.
     """
     structural =  scaled_feature_df.columns[:7]
-    syntactic = scaled_feature_df.columns[7:163]
-    topic = scaled_feature_df.columns[163:173]
-    lexical = scaled_feature_df.columns[173:373]
-    content = scaled_feature_df.columns[373:]
+    syntactic = scaled_feature_df.columns[7:19]
+    topic = scaled_feature_df.columns[19:29]
+    lexical = scaled_feature_df.columns[29:229]
+    content = scaled_feature_df.columns[229:]
     
     if order_by == 'structural':
         df = scaled_feature_df[structural]

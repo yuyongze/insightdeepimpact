@@ -91,49 +91,29 @@ def metadata(text): # 7 features
                [num_para,num_sentence,num_word,avg_sentence,avg_word,med_sentence,med_word]))
     
 
-def syntax_sturcture(text):  # 156 features
+def syntax_sturcture(text,tag_dict=None,normalize = True):  # 156 features
     """
     This function will use POS (part of speech) taging to identify the writing style of the text
     """
-    cleaned_text = preprocessing(text)
-    uni_tag_dict = dict.fromkeys({'ADJ','ADP','ADV','CONJ','DET','NOUN','NUM','PRT','PRON','VERB','.','X'},0)
+    cleaned_text = preprocessing(text)    
     taged_text_list = nltk.pos_tag(cleaned_text,tagset='universal')
            
-    # get a permutations from 
-    bi_tag_list = list(permutations(list(uni_tag_dict),2))
-    
-    double_tag_list = set()
-    for tag in uni_tag_dict.keys():
-        double_tag_list.add(tag+'_'+tag)
-    double_tag_dict = dict.fromkeys(double_tag_list,0) 
-    # 'ADJ_ADJ', 'ADP_ADP'...
-    
-    bi_tag_dict = set()
-    for bi_tag in bi_tag_list:
-        bi_tag_dict.add(str(bi_tag[0])+'_'+str(bi_tag[1]))
-    
-    # {'ADJ_ADP', 'ADJ_CONJ', 'ADP_ADJ', 'ADP_CONJ', 'CONJ_ADJ', 'CONJ_ADP'...}
-
-    bi_tag_dict = dict.fromkeys(bi_tag_dict,0)
-    bi_tag_dict.update(double_tag_dict)
-    
+    #get tag_dict
+    tag_list = ['DET','CONJ','VERB','X','ADJ','PRON','.','ADP','NUM','ADV','NOUN','PRT']
+    tag_dict = dict.fromkeys({'CONJ','ADJ','ADP','ADV','DET','X','NOUN','NUM','PRT','PRON','VERB','.'},0)
     for index in range(len(taged_text_list)):
         taged_text = taged_text_list[index][1]  # 'ADP'
-        try:
-            next_taged_text = taged_text_list[index+1][1] # 'ADJ'
-        except:
-            break
-        
-        uni_tag_dict[taged_text] +=1
-        bi_tag = taged_text+'_'+next_taged_text  #'ADP_ADJ'
-        bi_tag_dict[bi_tag] +=1
-    
-    tag_dict = {**uni_tag_dict,**bi_tag_dict}
-    
+        tag_dict[taged_text] += 1.0
+        # if normalize
+    if normalize:
+        factor = 1.0/sum(tag_dict.values())
+        tag_dict = {key: tag_dict[key]*factor for key in tag_list }
+             
     return tag_dict
 
 def topic_generator(text):
     """
+    Topic modeling ,10 topics
     """
     with open("./Models/Movie_review_LDA_model_v2.pickle", "rb") as f:
           lda_model = pickle.load(f)
@@ -180,7 +160,8 @@ def tfidf_generator(text):
 
 
 def doc2vec_generator(text):
-    model = Doc2Vec.load('./Models/d2v_v2.model')
+    model = Doc2Vec.load('./Models/d2v_v3.model')
+    model.random.seed(0)
     content_feature = model.infer_vector(word_tokenize(text.lower()))
     
     column_name = []
