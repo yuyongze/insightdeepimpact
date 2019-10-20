@@ -4,7 +4,7 @@ Improve Movie Discourse, Better!
 
  A web application to help you evaluate and improve the impact of movie reviews. 
 
-Links: [https://insightdeepimpact.com](https://insightdeepimpact.com)
+Links: [http://insightdeepimpact.com](http://insightdeepimpact.com)
 
 ## Project Description
 
